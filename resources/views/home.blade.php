@@ -39,15 +39,6 @@
             margin-top: 15px;
         }
 
-        textarea {
-            width: 100%;
-            height: 80px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-        }
-
         button {
             background-color: #007bff;
             color: white;
@@ -100,14 +91,22 @@
 
         ul {
             list-style-type: none;
-            /*max-width: 95%;*/
             padding: 0;
             margin: 0 auto;
         }
 
         .comment-form {
-            padding-right: 25px;
-            /*width: 95%;*/
+            width: 100%;
+            height: 180px;
+        }
+
+        textarea {
+            box-sizing: border-box;
+            width: 100%;
+            height: 120px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
         .comment {
@@ -124,8 +123,23 @@
             font-size: .8rem;
         }
 
-        textarea {
-            /*max-width: 95%;*/
+        .file-input {
+            padding: 5px 8px;
+            margin-bottom: 5px;
+        }
+
+        .submit-button {
+            float: right;
+        }
+
+        .upload-header {
+            text-align: left;
+        }
+
+        .upload-notice {
+            font-style: italic;
+            font-size: .85rem;
+            text-align: left;
         }
     </style>
 </head>
@@ -167,20 +181,22 @@
             <form class="comment-form" action="/comment/{{ $image->id }}" method="POST">
                 @csrf
                 <textarea name="comment" required></textarea>
-                <button type="submit">Submit Comment</button>
+                <button class="submit-button" type="submit">Submit Comment</button>
             </form>
         </div>
 
-        <p>Time remaining: <span id="countdown"></span></p>
+        <p id="countdown-message">Time remaining: <span id="countdown"></span></p>
     @else
         <p>No image uploaded yet. You can upload one below:</p>
     @endif
 
     @if($remainingTime <= 0)
-        <form action="/upload" method="POST" enctype="multipart/form-data">
+        <h3 class="upload-header">Timer expired! You can upload an image now. Max: 2MB</h3>
+        <p class="upload-notice"><em>Note:</em> Your IP address will be be displayed along with the image</p>
+        <form action="/upload" method="POST" enctype="multipart/form-data" style="display: flex; justify-content: space-between;">
             @csrf
-            <input type="file" name="image" required>
-            <button type="submit">Upload Image</button>
+            <input class="file-input" type="file" name="image" required>
+            <button class="submit-button" type="submit">Upload Image</button>
         </form>
     @endif
 </div>
@@ -188,12 +204,15 @@
 <script>
     let countdown = {{ $remainingTime }};
     const countdownElement = document.getElementById('countdown');
+    const countdownMessage = document.getElementById('countdown-message');
     if (countdown > 0) {
         const timer = setInterval(() => {
             countdown--;
             countdownElement.textContent = new Date(countdown * 1000).toISOString().substr(11, 8);
             if (countdown <= 0) clearInterval(timer);
         }, 1000);
+    } else {
+        countdownMessage.textContent = ''
     }
 </script>
 </body>
