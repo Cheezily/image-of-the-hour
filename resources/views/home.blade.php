@@ -113,9 +113,10 @@
         .comment {
             background: #eee;
             border-radius: 5px;
-            padding: 3px 8px;
+            padding: 1px 8px;
             text-align: left;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
+            font-size: .85rem;
         }
 
         .comment-info {

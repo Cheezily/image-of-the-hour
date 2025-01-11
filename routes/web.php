@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ImageController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -24,15 +25,6 @@ Route::post('/upload', [ImageController::class, 'upload'])->name('upload');
 
 Route::post('/vote/{image}', [ImageController::class, 'vote'])->name('vote');
 
-Route::post('/comment/{image}', function (Request $request, Image $image) {
-    $request->validate([
-        'comment' => 'required|string|max:500',
-    ]);
+Route::post('/comment/{image}', [CommentController::class, 'save']);
 
-    $image->comments()->create([
-        'content' => $request->comment,
-        'ip_address' => $request->ip()
-    ]);
-
-    return back();
-});
+Route::get('/delete/{password}', [ImageController::class, 'delete'])->name('delete');

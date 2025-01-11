@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -24,11 +25,13 @@ class ImageController extends Controller
         ]);
 
         // Ensure only the last 50 images are stored
-        $excessImages = Image::orderBy('created_at')->skip(50)->get();
+        if(Image::count() > 50) {
+            $excessImages = Image::orderBy('created_at')->skip(50)->get();
 
-        foreach ($excessImages as $oldImage) {
-            Storage::delete($oldImage->path); // Delete from storage
-            $oldImage->delete(); // Delete from database
+            foreach ($excessImages as $oldImage) {
+                Storage::delete($oldImage->path); // Delete from storage
+                $oldImage->delete(); // Delete from database
+            }
         }
 
         return redirect()->back()->with('message', 'Image uploaded successfully!');
@@ -55,4 +58,16 @@ class ImageController extends Controller
         return back();
     }
 
+    public function delete(Request $request, String $password)
+    {
+        if($password === DB::table('options')->first()->password) {
+            if(Image::orderBy('created_at', 'desc')->exists()) {
+                Image::orderBy('created_at', 'desc')->first()->delete();
+
+                return back();
+            }
+            return "No Image To Delete";
+        }
+        return 'Invalid Password';
+    }
 }
