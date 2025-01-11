@@ -30,7 +30,7 @@ class ImageController extends Controller
 
             foreach ($excessImages as $oldImage) {
                 Storage::delete($oldImage->path); // Delete from storage
-                $oldImage->delete(); // Delete from database
+//                $oldImage->delete(); // Delete from database
             }
         }
 
