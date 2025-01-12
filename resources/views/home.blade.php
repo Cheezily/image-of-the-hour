@@ -13,7 +13,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #f0f4f8;
+            background-color: #d0d4f8;
             color: #333;
         }
 
@@ -35,6 +35,14 @@
             border-radius: 10px;
             margin-bottom: 0px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .uploaded-by {
+            margin-top: 0;
+            padding-bottom: 5px;
+            font-size: .85rem;
+            font-style: italic;
+            border-bottom: 1px solid #777;
         }
 
         form {
@@ -115,6 +123,16 @@
             color: #555;
         }
 
+        .comment-button-row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .comment-ip-notice {
+            font-size: .85rem;
+            font-style: italic;
+        }
+
         .comment {
             background: #eee;
             border-radius: 5px;
@@ -126,16 +144,16 @@
 
         .comment-info {
             font-style: italic;
-            font-size: .8rem;
+            font-size: .85rem;
         }
 
         .upload-button {
             display: none;
         }
 
-        .comment-button {
-            margin: 0 auto;
-        }
+        /*.comment-button {*/
+        /*    margin: 0 auto;*/
+        /*}*/
 
         @media screen and (min-width: 900px) {
             .comment-button {
@@ -178,6 +196,12 @@
             width: auto;
             border-radius: 5px;
         }
+
+        .countdown-message {
+            border-top: 1px solid #777;
+            padding-top: 5px;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
@@ -185,8 +209,9 @@
     <h1>Image of the Hour</h1>
     @if($image)
         <div>
-            <p>Uploaded by IP: {{ $image->ip_address }}</p>
+            <p class="countdown-message" id="countdown-message">Time remaining until you can upload a new image: <span id="countdown"></span></p>
             <img src="{{ url('/').'/download/'.$image->path }}" alt="Uploaded Image">
+            <p class="uploaded-by">Image Submitted by IP: {{ $image->ip_address }}</p>
             <p>Upvotes: {{ $image->upvotes }} | Downvotes: {{ $image->downvotes }}</p>
 
             <form class="voting-form" action="/vote/{{ $image->id }}" method="POST">
@@ -218,11 +243,15 @@
             <form class="comment-form" action="/comment/{{ $image->id }}" method="POST">
                 @csrf
                 <textarea name="comment" required></textarea>
-                <button class="comment-button" type="submit">Submit Comment</button>
+                <div class="comment-button-row">
+                    <p class="comment-ip-notice">IP Address of comment submissions will be displayed</p>
+                    <button class="comment-button" type="submit">Submit Comment</button>
+                </div>
+                @error('comment')
+                <p class="error">{{$message}}</p>
+                @enderror
             </form>
         </div>
-
-        <p id="countdown-message">Time remaining until you can upload a new image: <span id="countdown"></span></p>
     @else
         @if(session('removed'))
             <p class="remove-message">{{ session('removed') }}</p>
