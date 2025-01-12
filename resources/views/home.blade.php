@@ -31,7 +31,7 @@
 
         img {
             max-width: 100%;
-            height: auto;
+            max-height: 800px;
             border-radius: 10px;
             margin-bottom: 0px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
