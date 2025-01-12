@@ -165,6 +165,19 @@
         .error {
             color: red;
         }
+
+        .success-message {
+            color: green;
+        }
+
+        .remove-message {
+            color: white;
+            background: green;
+            margin: 15px auto;
+            padding: 3px 5px;
+            width: auto;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -188,8 +201,8 @@
             <p>Enough downvotes will get rid of this image!</p>
         </div>
 
-        @if(session('message'))
-            <p>{{ session('message') }}</p>
+        @if(session('success'))
+            <p class="success-message">{{ session('success') }}</p>
         @endif
 
         <div class="comments-wrapper">
@@ -211,6 +224,9 @@
 
         <p id="countdown-message">Time remaining until you can upload a new image: <span id="countdown"></span></p>
     @else
+        @if(session('removed'))
+            <p class="remove-message">{{ session('removed') }}</p>
+        @endif
         <p>No image uploaded yet. You can upload one below:</p>
     @endif
 

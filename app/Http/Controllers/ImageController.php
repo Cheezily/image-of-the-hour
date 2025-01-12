@@ -33,7 +33,7 @@ class ImageController extends Controller
             }
         }
 
-        return redirect()->back()->with('message', 'Image uploaded successfully!');
+        return redirect()->back()->with('success', 'Image uploaded successfully!');
     }
 
 
@@ -51,7 +51,7 @@ class ImageController extends Controller
 
         if ($image->upvotes + $image->downvotes >= 20 && $image->downvotes >= 2 * $image->upvotes) {
             $image->delete();
-            return redirect()->route('home')->with('message', 'The image has been removed due to negative votes.');
+            return redirect()->route('home')->with('removed', 'The image has been removed due to negative votes.');
         }
 
         return back();
