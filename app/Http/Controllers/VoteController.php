@@ -24,6 +24,6 @@ class VoteController extends Controller
             return redirect()->route('home')->with('removed', 'The image has been removed due to negative votes.');
         }
 
-        return back();
+        return back()->with('voted', 'Vote Recorded. Thanks!');
     }
 }

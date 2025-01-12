@@ -174,7 +174,8 @@
             color: green;
         }
 
-        .remove-message {
+        .remove-message,
+        .voted-message {
             color: white;
             background: green;
             margin: 15px auto;
@@ -256,6 +257,9 @@
 <body>
 <div class="container">
     <h1>Image of the Hour</h1>
+    @if(session('voted'))
+        <p class="voted-message">{{ session('voted') }}</p>
+    @endif
     @if($image)
         <div>
             <p class="countdown-message" id="countdown-message">Time remaining until you can upload a new image: <span id="countdown"></span></p>
