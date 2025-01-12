@@ -63,7 +63,7 @@ class ImageController extends Controller
             if(Image::orderBy('created_at', 'desc')->exists()) {
                 Image::orderBy('created_at', 'desc')->first()->delete();
 
-                return back();
+                return redirect('/')->with('success', 'Image Deleted!');
             }
             return "No Image To Delete";
         }
