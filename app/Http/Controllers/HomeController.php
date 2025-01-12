@@ -13,6 +13,11 @@ class HomeController extends Controller
         $remainingTime = optional($image)->created_at ? now()->diffInSeconds($image->created_at->addHour(), false) : 0;
         $comments = $image ? $image->comments()->latest()->get() : collect();
 
+        if($image) {
+            $image->view_count += 1;
+            $image->save();
+        }
+
         $options = DB::table('options')->first();
 //dd($options);
         return view('home', [

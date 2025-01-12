@@ -261,6 +261,7 @@
             <p class="countdown-message" id="countdown-message">Time remaining until you can upload a new image: <span id="countdown"></span></p>
             <img src="{{ url('/').'/download/'.$image->path }}" alt="Uploaded Image">
             <p class="uploaded-by">Image Submitted by IP: {{ $image->ip_address }}</p>
+            <p>Views: {{$image->view_count}}</p>
             <p>Upvotes: {{ $image->upvotes }} | Downvotes: {{ $image->downvotes }}</p>
 
             <form class="voting-form" action="/vote/{{ $image->id }}" method="POST">
