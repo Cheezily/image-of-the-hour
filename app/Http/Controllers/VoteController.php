@@ -19,6 +19,8 @@ class VoteController extends Controller
             $image->increment('downvotes');
         }
 
+        $image->decrement('view_count');
+
         if ($image->upvotes + $image->downvotes >= 20 && $image->downvotes >= 2 * $image->upvotes) {
             $image->delete();
             return redirect()->route('home')->with('removed', 'The image has been removed due to negative votes.');

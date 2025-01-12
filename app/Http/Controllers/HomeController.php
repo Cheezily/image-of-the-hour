@@ -14,7 +14,7 @@ class HomeController extends Controller
         $comments = $image ? $image->comments()->latest()->get() : collect();
 
         if($image) {
-            $image->view_count += 1;
+            $image->increment('view_count');
             $image->save();
         }
 
