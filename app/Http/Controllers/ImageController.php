@@ -36,27 +36,6 @@ class ImageController extends Controller
         return redirect()->back()->with('success', 'Image uploaded successfully!');
     }
 
-
-    public function vote(Request $request, Image $image)
-    {
-        $request->validate([
-            'vote' => 'required|in:up,down',
-        ]);
-
-        if ($request->vote === 'up') {
-            $image->increment('upvotes');
-        } else {
-            $image->increment('downvotes');
-        }
-
-        if ($image->upvotes + $image->downvotes >= 20 && $image->downvotes >= 2 * $image->upvotes) {
-            $image->delete();
-            return redirect()->route('home')->with('removed', 'The image has been removed due to negative votes.');
-        }
-
-        return back();
-    }
-
     public function delete(Request $request, String $password)
     {
         if($password === DB::table('options')->first()->password) {

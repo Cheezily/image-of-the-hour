@@ -1,29 +1,19 @@
 <?php
 
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\ImageController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Image;
-use App\Models\Comment;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\VoteController;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\CommentController;
+
 
 // Define the web routes
-Route::get('/', function () {
-    $image = Image::latest()->first();
-    $remainingTime = optional($image)->created_at ? now()->diffInSeconds($image->created_at->addHour(), false) : 0;
-    $comments = $image ? $image->comments()->latest()->get() : collect();
-
-    return view('home', [
-        'image' => $image,
-        'remainingTime' => $remainingTime,
-        'comments' => $comments
-    ]);
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::post('/upload', [ImageController::class, 'upload'])->name('upload');
 
-Route::post('/vote/{image}', [ImageController::class, 'vote'])->name('vote');
+Route::post('/vote/{image}', [VoteController::class, 'record_vote'])->name('record_vote');
 
 Route::post('/comment/{image}', [CommentController::class, 'save']);
 

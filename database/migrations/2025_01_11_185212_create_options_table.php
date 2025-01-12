@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('options', function (Blueprint $table) {
             $table->id();
             $table->string('password');
-            $table->timestamps();
+            $table->boolean('use_matomo_tracking')->default(false);
+            $table->string('matomo_url')->nullable();
+            $table->string('matomo_id')->nullable();
         });
 
         DB::table('options')->insert([
