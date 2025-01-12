@@ -151,25 +151,6 @@
             display: none;
         }
 
-        /*.comment-button {*/
-        /*    margin: 0 auto;*/
-        /*}*/
-
-        @media screen and (min-width: 900px) {
-            .comment-button {
-                float: right;
-            }
-
-            .upload-form {
-                /*width: 100%;*/
-                display: flex;
-                justify-content: space-between;
-                padding: 5px 8px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-            }
-        }
-
         .upload-header {
             text-align: left;
         }
@@ -206,6 +187,34 @@
             border-top: 1px solid #777;
             padding-top: 5px;
             margin-bottom: 5px;
+        }
+
+        @media screen and (min-width: 900px) {
+            .comment-button {
+                float: right;
+            }
+
+            .upload-form {
+                /*width: 100%;*/
+                display: flex;
+                justify-content: space-between;
+                padding: 5px 8px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+        }
+
+        @media screen and (max-width: 800px) {
+            .container {
+                margin-right: 5px;
+                margin-left: 5px;
+                font-size: .85rem;
+            }
+
+            .upload-button {
+                margin: 20px auto;
+                float: none;
+            }
         }
     </style>
 
