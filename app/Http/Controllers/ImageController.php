@@ -15,9 +15,9 @@ class ImageController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $path = $request->file('image')->store('images');
+        $path = $request->file('image')->store();
 
-        $image = Image::create([
+        Image::create([
             'path' => $path,
             'ip_address' => $request->ip(),
             'upvotes' => 0,
@@ -29,8 +29,7 @@ class ImageController extends Controller
             $excessImages = Image::orderBy('created_at')->skip(50)->get();
 
             foreach ($excessImages as $oldImage) {
-                Storage::delete($oldImage->path); // Delete from storage
-//                $oldImage->delete(); // Delete from database
+                Storage::delete($oldImage->path);
             }
         }
 

@@ -20,19 +20,21 @@
         .container {
             max-width: 800px;
             width: 100%;
-            margin: 0 auto;
-            padding: 20px;
+            margin: 10px auto 50px;
+            padding: 10px 20px 20px;
             background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             text-align: center;
+            color: #555;
         }
 
         img {
             max-width: 100%;
             height: auto;
             border-radius: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 0px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         form {
@@ -67,7 +69,8 @@
         }
 
         h1 {
-            margin-bottom: 20px;
+            margin-top: 5px;
+            margin-bottom: 0;
         }
 
         h3 {
@@ -98,6 +101,7 @@
         .comment-form {
             width: 100%;
             height: 180px;
+            margin-top: 5px;
         }
 
         textarea {
@@ -105,8 +109,10 @@
             width: 100%;
             height: 120px;
             margin-bottom: 5px;
+            padding: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            color: #555;
         }
 
         .comment {
@@ -123,13 +129,27 @@
             font-size: .8rem;
         }
 
-        .file-input {
-            padding: 5px 8px;
-            margin-bottom: 5px;
+        .upload-button {
+            display: none;
         }
 
-        .submit-button {
-            float: right;
+        .comment-button {
+            margin: 0 auto;
+        }
+
+        @media screen and (min-width: 900px) {
+            .comment-button {
+                float: right;
+            }
+
+            .upload-form {
+                /*width: 100%;*/
+                display: flex;
+                justify-content: space-between;
+                padding: 5px 8px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
         }
 
         .upload-header {
@@ -141,6 +161,10 @@
             font-size: .85rem;
             text-align: left;
         }
+
+        .error {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -148,8 +172,8 @@
     <h1>Image of the Hour</h1>
     @if($image)
         <div>
-            <img src="{{ Storage::url($image->path) }}" alt="Uploaded Image">
             <p>Uploaded by IP: {{ $image->ip_address }}</p>
+            <img src="{{ url('/').'/download/'.$image->path }}" alt="Uploaded Image">
             <p>Upvotes: {{ $image->upvotes }} | Downvotes: {{ $image->downvotes }}</p>
 
             <form class="voting-form" action="/vote/{{ $image->id }}" method="POST">
@@ -169,7 +193,7 @@
         @endif
 
         <div class="comments-wrapper">
-            <h3>Comments</h3>
+            <h3>Comments for this Image</h3>
             <ul>
             @foreach($comments as $comment)
                 <li class="comment">
@@ -181,11 +205,11 @@
             <form class="comment-form" action="/comment/{{ $image->id }}" method="POST">
                 @csrf
                 <textarea name="comment" required></textarea>
-                <button class="submit-button" type="submit">Submit Comment</button>
+                <button class="comment-button" type="submit">Submit Comment</button>
             </form>
         </div>
 
-        <p id="countdown-message">Time remaining: <span id="countdown"></span></p>
+        <p id="countdown-message">Time remaining until you can upload a new image: <span id="countdown"></span></p>
     @else
         <p>No image uploaded yet. You can upload one below:</p>
     @endif
@@ -193,15 +217,19 @@
     @if($remainingTime <= 0)
         <h3 class="upload-header">Timer expired! You can upload an image now. Max: 2MB</h3>
         <p class="upload-notice"><em>Note:</em> Your IP address will be be displayed along with the image</p>
-        <form action="/upload" method="POST" enctype="multipart/form-data" style="display: flex; justify-content: space-between;">
+        <form action="/upload" class="upload-form" method="POST" enctype="multipart/form-data">
             @csrf
-            <input class="file-input" type="file" name="image" required>
-            <button class="submit-button" type="submit">Upload Image</button>
+            <input class="" type="file" name="image" id="file-input" required>
+            <button class="upload-button" id="upload-button" type="submit">Upload Image</button>
         </form>
+        @error('image')
+        <p class="error">{{$message}}</p>
+        @enderror
     @endif
 </div>
 
 <script>
+    // Show the timeer
     let countdown = {{ $remainingTime }};
     const countdownElement = document.getElementById('countdown');
     const countdownMessage = document.getElementById('countdown-message');
@@ -214,6 +242,19 @@
     } else {
         countdownMessage.textContent = ''
     }
+</script>
+
+<script>
+    // Show the save button only when there's something in the file input
+    document.getElementById('file-input').addEventListener('change', function () {
+        const uploadButton = document.getElementById('upload-button');
+        // Show the Save button if a file is selected
+        if (this.files.length > 0) {
+            uploadButton.style.display = 'block';
+        } else {
+            uploadButton.style.display = 'none';
+        }
+    });
 </script>
 </body>
 </html>

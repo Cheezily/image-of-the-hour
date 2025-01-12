@@ -28,3 +28,15 @@ Route::post('/vote/{image}', [ImageController::class, 'vote'])->name('vote');
 Route::post('/comment/{image}', [CommentController::class, 'save']);
 
 Route::get('/delete/{password}', [ImageController::class, 'delete'])->name('delete');
+
+Route::get('download/{filename}', function ($filename) {
+    $path = "$filename";
+
+    // Check if the file exists
+    if (!Storage::disk('local')->exists($path)) {
+        abort(404, 'File not found');
+    }
+
+    // Serve the file for download
+    return Storage::disk('local')->download($path);
+});
