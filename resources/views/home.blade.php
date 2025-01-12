@@ -13,7 +13,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #d0d4f8;
+            background-color: #d0ddd8;
             color: #333;
         }
 
@@ -21,7 +21,7 @@
             max-width: 800px;
             width: 100%;
             margin: 10px auto 50px;
-            padding: 10px 20px 20px;
+            padding: 10px 20px 10px;
             background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -182,6 +182,11 @@
 
         .error {
             color: red;
+            text-align: center;
+        }
+
+        .comment-error {
+            padding-bottom: 5px;
         }
 
         .success-message {
@@ -231,12 +236,12 @@
         @endif
 
         <div class="comments-wrapper">
-            <h3>Comments for this Image</h3>
+            <h3>Comments for this Image (Max: 500 Characters)</h3>
             <ul>
             @foreach($comments as $comment)
                 <li class="comment">
                     <p>{{ $comment->content }}</p>
-                    <p class="comment-info">(IP: {{ $comment->ip_address }}, Posted: {{ $comment->created_at->format('Y-m-d H:i:s') }})</p>
+                    <p class="comment-info">(IP: {{ $comment->ip_address }}, Posted: {{ $comment->created_at->format('Y-m-d H:i:s') }} UTC)</p>
                 </li>
             @endforeach
             </ul>
@@ -247,14 +252,14 @@
                     <p class="comment-ip-notice">IP Address of comment submissions will be displayed</p>
                     <button class="comment-button" type="submit">Submit Comment</button>
                 </div>
-                @error('comment')
-                <p class="error">{{$message}}</p>
-                @enderror
             </form>
+            @error('comment')
+            <p class="error comment-error">{{$message}}</p>
+            @enderror
         </div>
     @else
         @if(session('removed'))
-            <p class="remove-message">{{ session('removed') }}</p>
+        <p class="remove-message">{{ session('removed') }}</p>
         @endif
         <p>No image uploaded yet. You can upload one below:</p>
     @endif
