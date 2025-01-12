@@ -189,6 +189,14 @@
             margin-bottom: 5px;
         }
 
+        .desktop-comment-button-text {
+            display: inline;
+        }
+
+        .mobile-comment-button-text {
+            display: none;
+        }
+
         @media screen and (min-width: 900px) {
             .comment-button {
                 float: right;
@@ -214,6 +222,14 @@
             .upload-button {
                 margin: 20px auto;
                 float: none;
+            }
+
+            .desktop-comment-button-text {
+                display: none;
+            }
+
+            .mobile-comment-button-text {
+                display: inline;
             }
         }
     </style>
@@ -278,7 +294,10 @@
                 <textarea name="comment" required></textarea>
                 <div class="comment-button-row">
                     <p class="comment-ip-notice">IP Address of comment submissions will be displayed</p>
-                    <button class="comment-button" type="submit">Submit Comment</button>
+                    <button class="comment-button" type="submit">
+                        <span class="desktop-comment-button-text">Submit Comment</span>
+                        <span class="mobile-comment-button-text">Submit</span>
+                    </button>
                 </div>
             </form>
             @error('comment')
